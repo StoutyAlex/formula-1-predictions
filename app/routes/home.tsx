@@ -1,13 +1,22 @@
+import { requireUserId } from "~/utils/auth.server";
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import type { LoaderFunction } from "react-router";
+
+export const loader: LoaderFunction = ({ request }) => {
+  return requireUserId(request);
+}
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Formula 1 - Predictor" },
+    { name: "description", content: "Predict formula one results" },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <main className="flex items-center justify-center pt-16 pb-4">
+      Login
+    </main>
+  );
 }
