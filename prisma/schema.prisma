@@ -33,3 +33,12 @@ model Driver {
   name String
   number Int
 }
+
+model League {
+  id String @id @map("_id") @default(auto()) @db.ObjectId
+  name String @unique
+  members String[]
+  owner String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
