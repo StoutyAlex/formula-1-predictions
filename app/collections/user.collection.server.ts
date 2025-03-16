@@ -1,5 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { redirect } from 'react-router';
 import { prisma } from '~/utils/prisma.server';
 import type { RegisterForm } from '~/utils/types.server';
 
@@ -54,6 +55,13 @@ export class UserCollection {
       },
     });
   };
+
+  static update = async (where: Prisma.UserWhereUniqueInput, data: Prisma.UserUpdateInput) => {
+    await prisma.user.update({
+      where,
+      data,
+    });
+  }
 
   static addLeague = async (userId: string, leagueId: string): Promise<User> => {
     return prisma.user.update({

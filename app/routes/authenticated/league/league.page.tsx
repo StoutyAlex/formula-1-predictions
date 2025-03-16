@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useLoaderData, type LoaderFunctionArgs } from 'react-router';
+import { Link, useFetcher, useLoaderData, type LoaderFunctionArgs } from 'react-router';
 import { LeagueCollection } from '~/collections/league.collection.server';
+import { FormField } from '~/components/form-field';
 import { useUser } from '~/contexts/user.context';
 import { requireAndGetUser } from '~/loader-functions/user.server';
 import { errorResponse, jsonResponse } from '~/utils/responses';
@@ -48,12 +49,17 @@ export default function LeaguePage() {
         <button type="submit" className="absolute top-8 right-8 rounded-xl bg-black font-semibold text-red-400 px-3 py-2">
           Sign out
         </button>
-
-        <h2 className="text-2xl mb-4">{league.name}</h2>
-        <p>Join code: {league.joinCode.toUpperCase()}</p>
-        <p>Members: {JSON.stringify(members)}</p>
-        <p>Owner: {owner}</p>
       </form>
+
+      <h2 className="text-2xl mb-4">{league.name}</h2>
+      <p>Join code: {league.joinCode.toUpperCase()}</p>
+      <p>Members: {JSON.stringify(members)}</p>
+      <p>Owner: {owner}</p>
+
+      <br />
+        <Link to={`/league/leave/${league.id}`}>
+          Leave
+        </Link>
     </main>
   );
 }

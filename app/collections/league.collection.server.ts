@@ -16,6 +16,30 @@ export class LeagueCollection {
     return Boolean(exists);
   };
 
+  static findLeague = async (where: Prisma.LeagueWhereUniqueInput) => {
+    return prisma.league.findFirst({
+      where
+    });
+  }
+
+  static addMember = async (where: Prisma.LeagueWhereUniqueInput, userId: string) => {
+    return prisma.league.update({
+      where,
+      data: {
+        members: {
+          push: userId,
+        }
+      }
+    });
+  };
+
+  static update = async (where: Prisma.LeagueWhereUniqueInput, data: Prisma.LeagueUpdateInput) => {
+    return prisma.league.update({
+      where,
+      data,
+    });
+  };
+
   static getMembers = async (leagueOrId: League | string) => {
     const league = typeof leagueOrId === 'string' ? await prisma.league.findUnique({
       where: { id: leagueOrId },
@@ -43,6 +67,10 @@ export class LeagueCollection {
       },
     });
   };
+
+  static delete = async (where: Prisma.LeagueWhereUniqueInput) => {
+    return prisma.league.delete({ where });
+  }
 
   static getLeague = async (where: Prisma.LeagueWhereUniqueInput) => {
     return prisma.league.findUnique({

@@ -37,6 +37,9 @@ export default function HomePage() {
       <Link to="/league/create" className="mt-4">
         Create a league
       </Link>
+      <Link to="/league/join" className="mt-4">
+        Join a league
+      </Link>
     </main>
   );
 }

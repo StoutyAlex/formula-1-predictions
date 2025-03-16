@@ -7,7 +7,7 @@ import { UserCollection } from '~/collections/user.collection.server';
 const { randomUUID: createJoinCode } = new ShortUniqueId({ length: 8 });
 
 export const createLeague = async (leagueName: string, ownerId: string) => {
-  const joinCode = createJoinCode();
+  const joinCode = createJoinCode().toUpperCase();
 
   const exists = await LeagueCollection.exists(leagueName, ownerId);
   if (exists) {

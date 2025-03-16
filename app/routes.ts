@@ -11,8 +11,10 @@ export default [
 
     // Leagues
     ...prefix('/league', [
-      route('/create', './routes/authenticated/create-league.page.tsx'),
-      route('/:leagueId', './routes/authenticated/league.page.tsx'),
+      route('/create', './routes/authenticated/league/create.page.tsx'),
+      route('/:leagueId', './routes/authenticated/league/league.page.tsx'),
+      route('/join', './routes/authenticated/league/join.page.tsx'),
+      route('/leave/:leagueId', './routes/authenticated/league/api/leave.api.ts')
     ]),
   ]),
 ] satisfies RouteConfig;
