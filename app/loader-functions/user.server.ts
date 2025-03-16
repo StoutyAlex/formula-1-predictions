@@ -1,7 +1,7 @@
 import type { Prisma } from '@prisma/client';
 import { redirect } from 'react-router';
+import { UserCollection } from '~/collections/user.collection.server';
 import { getUserId, getUserSession, logout } from '~/utils/auth.server';
-import { prisma } from '~/utils/prisma.server';
 
 export type User = Prisma.UserGetPayload<{
   omit: {
@@ -17,10 +17,7 @@ export const getUser = async (request: Request): Promise<User | null> => {
   if (!userId) return null;
 
   try {
-    return prisma.user.findUnique({
-      where: { id: userId },
-      select: { id: true, username: true },
-    });
+    return UserCollection.getUser({ id: userId });
   } catch (error) {
     throw logout(request);
   }

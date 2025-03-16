@@ -1,9 +1,8 @@
-import { createCookieSessionStorage, redirect } from 'react-router';
-import { prisma } from './prisma.server';
-import type { LoginForm, RegisterForm } from './types.server';
-import { createUser } from './users.server';
 import bcrypt from 'bcryptjs';
+import { createCookieSessionStorage, redirect } from 'react-router';
+import { UserCollection } from '~/collections/user.collection.server';
 import { errorResponse } from './responses';
+import type { LoginForm, RegisterForm } from './types.server';
 
 const secret = process.env.SESSION_SECRET;
 if (!secret) {
@@ -23,14 +22,14 @@ const storage = createCookieSessionStorage({
 });
 
 export const register = async (form: RegisterForm) => {
-  const exists = await prisma.user.count({ where: { email: form.email } });
+  const exists = await UserCollection.exists({ email: form.email });
   if (exists) {
     return errorResponse('User already exists with that email.', {
       status: 400,
     });
   }
 
-  const newUser = await createUser(form);
+  const newUser = await UserCollection.createUser(form);
   if (!newUser) {
     return errorResponse('Something went wrong trying to create account.', {
       status: 400,
@@ -48,7 +47,7 @@ export const login = async (form: LoginForm) => {
     status: 400,
   });
 
-  const user = await prisma.user.findUnique({ where: { email: form.email } });
+  const user = await UserCollection.getFullUser({ email: form.email });
   if (!user) return incorrectLoginResponse;
 
   const passwordMatch = await bcrypt.compare(form.password, user.password);

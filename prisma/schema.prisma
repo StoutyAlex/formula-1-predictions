@@ -13,11 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+type Profile {
+  leagues String[]
+}
+
 model User {
   id String @id @map("_id") @default(auto()) @db.ObjectId
   email String @unique
   username String @unique
   password String
+  profile Profile
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -37,6 +42,7 @@ model Driver {
 model League {
   id String @id @map("_id") @default(auto()) @db.ObjectId
   name String @unique
+  joinCode String @unique
   members String[]
   owner String
   createdAt DateTime @default(now())
