@@ -19,6 +19,7 @@
       "~/*": ["./app/*"]
     },
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
     "resolveJsonModule": true,

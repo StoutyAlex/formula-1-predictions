@@ -9,12 +9,15 @@ export default [
   layout('./routes/auth-guard.layout.tsx', [
     route('/home', './routes/authenticated/home.page.tsx'),
 
+    // Seasons
+    ...prefix('/season', [route('/:year', './routes/authenticated/season/$year.page.tsx')]),
+
     // Leagues
     ...prefix('/league', [
       route('/create', './routes/authenticated/league/create.page.tsx'),
       route('/:leagueId', './routes/authenticated/league/league.page.tsx'),
       route('/join', './routes/authenticated/league/join.page.tsx'),
-      route('/leave/:leagueId', './routes/authenticated/league/api/leave.api.ts')
+      route('/leave/:leagueId', './routes/authenticated/league/api/leave.api.ts'),
     ]),
   ]),
 ] satisfies RouteConfig;
