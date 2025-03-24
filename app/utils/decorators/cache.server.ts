@@ -1,11 +1,11 @@
 import { redisClient } from '~/redis/config.server';
 
-export function Cache(key: string) {
+export function Cache(key: string, idOverride?: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: any) {
-      const id = JSON.stringify(args);
+      const id = idOverride || JSON.stringify(args);
       const cachedData = await redisClient.get(`${key}:${id}`);
       if (cachedData) {
         return cachedData ? JSON.parse(cachedData) : null;

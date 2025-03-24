@@ -1,21 +1,22 @@
 import { useLoaderData, type LoaderFunctionArgs } from 'react-router';
-import { F1Data } from '~/services/f1-seasons.server';
+import { Meeting } from '~/services/formula-one/models/meeting.model';
 import { errorResponse, jsonResponse } from '~/utils/responses';
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const year = params.year;
+
   if (!year) return jsonResponse({}, { status: 404 });
 
-  const season = await F1Data.getSeason(year);
-  if (!season) throw errorResponse('Could not find season', { status: 404 });
+  const meetings = await Meeting.getMeetings(year);
+  if (!meetings) throw errorResponse('Could not find season', { status: 404 });
 
   return {
-    season,
+    meetings,
   };
 };
 
 export default function SeasonPage() {
-  const { season } = useLoaderData<typeof loader>();
+  const { meetings } = useLoaderData<typeof loader>();
 
   return (
     <main className="flex items-center justify-center pt-16 pb-4 flex-col">
@@ -25,13 +26,13 @@ export default function SeasonPage() {
         </button>
       </form>
 
-      <h2 className="text-2xl mb-4">Season details</h2>
+      <h2 className="text-2xl mb-4">Season details 1</h2>
 
-      {season.map((meeting) => (
-        <div key={meeting.meeting_key} className="mt-4">
-          <h3>{meeting.meeting_name}</h3>
-          <p>{meeting.meeting_key}</p>
-          <p>{meeting.circuit_key}</p>
+      {meetings.map((meeting) => (
+        <div key={meeting.meetingKey} className="mt-4">
+          <h3>{meeting.name}</h3>
+          <p>{meeting.officialName}</p>
+          <p>{meeting.location}</p>
         </div>
       ))}
     </main>

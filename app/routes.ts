@@ -9,8 +9,14 @@ export default [
   layout('./routes/auth-guard.layout.tsx', [
     route('/home', './routes/authenticated/home.page.tsx'),
 
-    // Seasons
-    ...prefix('/season', [route('/:year', './routes/authenticated/season/$year.page.tsx')]),
+    ...prefix('/season', [
+      route('/:year', './routes/authenticated/season/season.$year.page.tsx'),
+      route('/:year/meeting/:meetingKey', './routes/authenticated/season/meeting/meeting.$id.page.tsx'),
+      route(
+        '/:year/meeting/:meetingKey/session/:sessionKey',
+        './routes/authenticated/season/meeting/session/session.$id.page.tsx'
+      ),
+    ]),
 
     // Leagues
     ...prefix('/league', [
