@@ -1,7 +1,7 @@
 import { OpenF1Repo } from '~/services/third-party/open-f1/open-f1.repo.server';
 import type { F1Meeting, F1Session } from '~/services/third-party/open-f1/types/open-f1.types';
 import { Cache } from '~/utils/decorators/cache.server';
-import { Session } from './sessions.model';
+import { Session } from './session.model';
 
 interface IMeeting {
   meetingKey: number;

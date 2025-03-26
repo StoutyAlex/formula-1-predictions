@@ -7,9 +7,14 @@ interface GetSessionParams {
   sessionKey?: number;
 }
 
+interface GetDriversParams {
+  meetingKey?: number;
+  sessionKey?: number;
+}
+
 interface GetDriverParams {
   meetingKey?: number;
-  driverKey?: number;
+  driverNumber?: number;
   sessionKey?: number;
 }
 
@@ -75,16 +80,6 @@ export class OpenF1Repo {
     return data[0] || null;
   }
 
-  @Cache('of1:repo:driver')
-  static async getDriver(params: GetDriverParams) {
-    const url = new URL(`https://api.openf1.org/v1/drivers`);
-    params.driverKey && url.searchParams.append('driver_key', params.driverKey.toString());
-
-    const response = await fetch(url.toString());
-    const data = (await response.json()) as F1Driver[];
-    return data[0] || null;
-  }
-
   @Cache('of1:repo:positions')
   static async getPositions(params: GetPositionsParams) {
     const url = new URL(`https://api.openf1.org/v1/position`);
@@ -102,10 +97,26 @@ export class OpenF1Repo {
   }
 
   @Cache('of1:repo:drivers')
-  static async getDrivers(params: GetDriverParams) {
+  static async getDrivers(params: GetDriversParams) {
     const url = new URL(`https://api.openf1.org/v1/drivers`);
     params.meetingKey && url.searchParams.append('meeting_key', params.meetingKey.toString());
     params.sessionKey && url.searchParams.append('session_key', params.sessionKey.toString());
+
+    const response = await fetch(url.toString());
+    const data = (await response.json()) as F1Driver[];
+
+    if (!data.length) {
+      return null;
+    }
+
+    return data;
+  }
+
+  @Cache('of1:repo:driver')
+  static async getDriver(params: GetDriverParams) {
+    const url = new URL(`https://api.openf1.org/v1/drivers`);
+    params.sessionKey && url.searchParams.append('session_key', params.sessionKey.toString());
+    params.driverNumber && url.searchParams.append('driver_number', params.driverNumber.toString());
 
     const response = await fetch(url.toString());
     const data = (await response.json()) as F1Driver[];

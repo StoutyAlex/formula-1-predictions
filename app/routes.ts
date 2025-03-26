@@ -9,6 +9,14 @@ export default [
   layout('./routes/auth-guard.layout.tsx', [
     route('/home', './routes/authenticated/home.page.tsx'),
 
+    // Admin
+    layout('./routes/authenticated/admin/admin.layout.tsx', [
+      route('/admin', './routes/authenticated/admin/admin.page.tsx'),
+      route('/admin/drivers', './routes/authenticated/admin/drivers.page.tsx'),
+      route('/admin/users', './routes/authenticated/admin/users.page.tsx'),
+    ]),
+
+    // F1 Info
     ...prefix('/season', [
       route('/:year', './routes/authenticated/season/season.$year.page.tsx'),
       route('/:year/meeting/:meetingKey', './routes/authenticated/season/meeting/meeting.$id.page.tsx'),

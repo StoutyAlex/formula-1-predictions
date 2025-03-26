@@ -1,4 +1,5 @@
 import { useLoaderData, useRouteLoaderData, type LoaderFunctionArgs } from 'react-router';
+import { Session } from '~/services/formula-one/models/session.model';
 import { OpenF1Repo } from '~/services/third-party/open-f1/open-f1.repo.server';
 import { jsonResponse } from '~/utils/responses';
 
@@ -7,20 +8,15 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   const meetingKey = params.meetingKey;
   if (!sessionKey || !meetingKey) return jsonResponse({}, { status: 404 });
 
-  const session = await OpenF1Repo.getSession(Number(sessionKey));
-  const drivers = await OpenF1Repo.getDrivers({
-    sessionKey: Number(sessionKey),
-    meetingKey: Number(meetingKey),
-  });
+  const session = await Session.getSession(Number(sessionKey));
 
   return {
     session,
-    drivers,
   };
 };
 
 export default function SessionPage() {
-  const { drivers, session } = useLoaderData<typeof loader>();
+  const { session } = useLoaderData<typeof loader>();
 
   const data = useRouteLoaderData('/season/:year');
 
@@ -32,19 +28,16 @@ export default function SessionPage() {
         </button>
       </form>
       <h2 className="text-2xl mb-4">Session details</h2>
-      <div key={session.session_key} className="mt-4">
-        <h3>{session.session_name}</h3>
-        <p>{session.session_key}</p>
-        <p>{session.session_type}</p>
+      <div key={session.name} className="mt-4">
+        <h3>{session.countryName}</h3>
+        <p>{session.name}</p>
       </div>
 
-      <div>Total Positions: {drivers?.length}</div>
-
-      {drivers?.map((driver) => (
-        <div key={driver.driver_number} className="mt-4">
-          <h3>{driver.full_name}</h3>
-          <p>{driver.driver_number}</p>
-          <p>{driver.team_name}</p>
+      {session.positions?.map((position) => (
+        <div key={position.driver.driverNumber} className="mt-4">
+          <h3>{position.driver.name}</h3>
+          <p>{position.position}</p>
+          <p>{position.date.toISOString()}</p>
         </div>
       ))}
     </main>
