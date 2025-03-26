@@ -17,6 +17,14 @@ export class DriverCollection {
     });
   };
 
+  static getAll = async () => {
+    // const result = await prisma.driver.findMany({
+    //   take: 5,
+    // });
+
+    return prisma.driver.findMany();
+  };
+
   static delete = async (where: Prisma.DriverWhereUniqueInput) => {
     return prisma.driver.delete({ where });
   };

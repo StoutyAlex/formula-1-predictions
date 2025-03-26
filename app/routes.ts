@@ -14,6 +14,7 @@ export default [
       route('/admin', './routes/authenticated/admin/admin.page.tsx'),
       route('/admin/drivers', './routes/authenticated/admin/drivers.page.tsx'),
       route('/admin/users', './routes/authenticated/admin/users.page.tsx'),
+      route('/admin/constructors', './routes/authenticated/admin/constructors.page.tsx'),
     ]),
 
     // F1 Info

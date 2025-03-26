@@ -1,22 +1,21 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, type HeadersFunction } from 'react-router';
-
-import type { Route } from './+types/root';
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, type LinksFunction } from 'react-router';
 import './app.css';
+import type { Route } from './+types/root';
 
-export const links: Route.LinksFunction = () => [
-  // { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  // {
-  //   rel: 'preconnect',
-  //   href: 'https://fonts.gstatic.com',
-  //   crossOrigin: 'anonymous',
-  // },
-  // {
-  //   rel: 'stylesheet',
-  //   href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  // },
+import { ConfigProvider, theme } from 'antd';
+import { useState } from 'react';
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'stylesheet',
+    href: 'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css',
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // TODO: Toggle this
+  const [darkMode, setDarkMode] = useState(true);
+
   return (
     <html lang="en">
       <head>
@@ -26,8 +25,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <ConfigProvider
+          theme={{
+            algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+          }}
+        >
+          {children}
+        </ConfigProvider>
         <ScrollRestoration />
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
         <Scripts />
       </body>
     </html>
@@ -35,9 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return (
-    <Outlet />
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {

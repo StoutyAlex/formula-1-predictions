@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { TbHelmet, TbHome, TbIcons, TbLayoutSidebarLeftExpandFilled, TbLayoutSidebarRightExpandFilled, TbUser } from 'react-icons/tb';
+import { TbCar, TbHelmet, TbHome, TbIcons, TbLayoutSidebarLeftExpandFilled, TbLayoutSidebarRightExpandFilled, TbUser } from 'react-icons/tb';
 import { Link } from 'react-router';
 
 export const AdminList = () => {
@@ -12,6 +12,7 @@ export const AdminList = () => {
 
   const adminLinks = [
     { name: 'Dashboard', icon: TbHome, href: '/admin' },
+    { name: 'Constructors', icon: TbCar, href: '/admin/constructors' },
     { name: 'Drivers', icon: TbHelmet, href: '/admin/drivers' },
     { name: 'Users', icon: TbUser, href: '/admin/users' },
   ];

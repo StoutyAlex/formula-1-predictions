@@ -27,9 +27,10 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-model Team {
+model Constructor {
   id String @id @map("_id") @default(auto()) @db.ObjectId
   name String
+  drivers String[]
 }
 
 model Driver {
