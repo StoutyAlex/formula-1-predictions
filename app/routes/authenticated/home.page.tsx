@@ -1,6 +1,6 @@
 import { Link, useLoaderData, type LoaderFunctionArgs } from 'react-router';
-import { LeagueCollection } from '~/collections/league.collection.server';
 import { useUser } from '~/contexts/user.context';
+import { LeagueCollection } from '~/database/collections/league.collection.server';
 import { requireAndGetUser } from '~/loader-functions/user.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

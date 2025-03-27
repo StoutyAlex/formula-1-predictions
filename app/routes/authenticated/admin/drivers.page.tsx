@@ -1,5 +1,5 @@
 import { useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { DriverCollection } from "~/collections/driver.collection.server";
+import { DriverCollection } from "~/database/collections/driver.collection.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const drivers = await DriverCollection.getAll();

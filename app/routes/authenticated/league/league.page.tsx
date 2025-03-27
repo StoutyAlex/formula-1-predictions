@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
-import { Link, useFetcher, useLoaderData, type LoaderFunctionArgs } from 'react-router';
-import { LeagueCollection } from '~/collections/league.collection.server';
-import { FormField } from '~/components/form-field';
+import { Link, useLoaderData, type LoaderFunctionArgs } from 'react-router';
 import { useUser } from '~/contexts/user.context';
+import { LeagueCollection } from '~/database/collections/league.collection.server';
 import { requireAndGetUser } from '~/loader-functions/user.server';
 import { errorResponse, jsonResponse } from '~/utils/responses';
 

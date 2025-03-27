@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import { createCookieSessionStorage, redirect } from 'react-router';
-import { UserCollection } from '~/collections/user.collection.server';
 import { errorResponse } from './responses';
 import type { LoginForm, RegisterForm } from './types.server';
+import { UserCollection } from '~/database/collections/user.collection.server';
 
 const secret = process.env.SESSION_SECRET;
 if (!secret) {

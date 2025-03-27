@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import { redirect } from 'react-router';
-import { UserCollection } from '~/collections/user.collection.server';
+import { UserCollection } from '~/database/collections/user.collection.server';
 import { getUserId, getUserSession, logout } from '~/utils/auth.server';
 
 export type User = Prisma.UserGetPayload<{

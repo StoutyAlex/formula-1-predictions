@@ -1,5 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import { prisma } from '~/utils/prisma.server';
+import { ConstructorEntity } from '../entities/constructor.entity';
 
 export type Constructor = Prisma.ConstructorGetPayload<{}>;
 
@@ -9,6 +10,14 @@ export class ConstructorCollection {
       where,
       data,
     });
+  };
+
+  static create = async (data: Prisma.ConstructorCreateInput) => {
+    const constructorData = await prisma.constructor.create({
+      data,
+    });
+
+    return ConstructorEntity.fromData(constructorData);
   };
 
   static upsert = async (where: Prisma.ConstructorWhereUniqueInput, data: Prisma.ConstructorCreateInput) => {
@@ -27,7 +36,7 @@ export class ConstructorCollection {
 
   static getAll = async () => {
     const result = await prisma.constructor.findMany();
-    return result;
+    return result.map(ConstructorEntity.fromData);
   };
 
   static delete = async (where: Prisma.ConstructorWhereUniqueInput) => {

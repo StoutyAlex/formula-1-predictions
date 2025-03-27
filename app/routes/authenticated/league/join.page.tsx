@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Link, redirect, useLoaderData, type LoaderFunctionArgs } from 'react-router';
-import { LeagueCollection } from '~/collections/league.collection.server';
-import { UserCollection } from '~/collections/user.collection.server';
+import { Link, redirect, type LoaderFunctionArgs } from 'react-router';
 import { FormField } from '~/components/form-field';
+import { LeagueCollection } from '~/database/collections/league.collection.server';
+import { UserCollection } from '~/database/collections/user.collection.server';
 import { requireUserId } from '~/loader-functions/user.server';
 import { errorResponse } from '~/utils/responses';
 

@@ -1,10 +1,5 @@
-import { redirect, type ActionFunction, type LoaderFunction } from 'react-router';
-import { logout } from '~/utils/auth.server';
+import { type ActionFunction } from 'react-router';
 
 export const action: ActionFunction = async ({ request }) => {
-  return logout(request);
-};
-
-export const loader: LoaderFunction = async () => {
-  return redirect('/');
+  console.log('Logged out', request);
 };

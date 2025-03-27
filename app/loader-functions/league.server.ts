@@ -1,8 +1,8 @@
-import { LeagueCollection } from '~/collections/league.collection.server';
 import { errorResponse } from '~/utils/responses';
 
 import ShortUniqueId from 'short-unique-id';
-import { UserCollection } from '~/collections/user.collection.server';
+import { LeagueCollection } from '~/database/collections/league.collection.server';
+import { UserCollection } from '~/database/collections/user.collection.server';
 
 const { randomUUID: createJoinCode } = new ShortUniqueId({ length: 8 });
 

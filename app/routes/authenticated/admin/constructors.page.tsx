@@ -1,8 +1,56 @@
+import { Table, type TableProps } from 'antd';
 import { useState } from 'react';
-import { useLoaderData, type LoaderFunctionArgs } from 'react-router';
-import { ConstructorCollection } from '~/collections/constructor.collection.server';
-import { Modal } from '~/components/modal.component';
-import { CreateConstructorModalForm } from '~/components/modals/create-driver.modal.component';
+import type { ActionFunctionArgs } from 'react-router';
+import { useFetcher, useLoaderData, useSubmit, type LoaderFunctionArgs } from 'react-router';
+import { UpsertConstructorModalForm, type CreateDriverRequest } from '~/components/modals/create-driver.modal.component';
+import { ConstructorCollection } from '~/database/collections/constructor.collection.server';
+import type { ConstructorEntity } from '~/database/entities/constructor.entity';
+import { jsonResponse } from '~/utils/responses';
+
+const columns: TableProps<ConstructorEntity>['columns'] = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: 'Country',
+    dataIndex: 'country',
+    key: 'country',
+  },
+  {
+    title: 'Color',
+    dataIndex: 'color',
+    key: 'color',
+  },
+  {
+    title: 'Drivers',
+    dataIndex: 'drivers',
+    key: 'drivers',
+  },
+] as const;
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+
+  const name = formData.get('name');
+  const drivers = formData.get('drivers');
+  const color = formData.get('color');
+  const country = formData.get('country');
+
+  if (!name || !color || !country) {
+    return jsonResponse({ error: 'Missing required fields' }, { status: 400 });
+  }
+
+  const constructor = await ConstructorCollection.create({
+    name: name as string,
+    color: color as string,
+    country: country as string,
+    drivers: [],
+  });
+
+  return constructor;
+};
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const constructors = await ConstructorCollection.getAll();
@@ -14,8 +62,18 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function AdminConstructorsPage() {
   const { constructors } = useLoaderData<typeof loader>();
+  const { submit: createConstructor } = useFetcher<typeof action>();
 
   const [createConstructorModal, setCreateConstructorModal] = useState(false);
+
+  const onSubmitCreateConstructor = async (data: CreateDriverRequest) => {
+    await createConstructor(
+      { ...data },
+      {
+        method: 'post',
+      }
+    );
+  };
 
   return (
     <main className="flex flex-col">
@@ -27,13 +85,14 @@ export default function AdminConstructorsPage() {
       >
         Toggle modal
       </button>
-      <CreateConstructorModalForm open={createConstructorModal} onCancel={() => setCreateConstructorModal(false)} />
-      {constructors.map((constructor) => (
-        <div key={constructor.id} className="mt-4">
-          <h3>{constructor.name}</h3>
-          <p>{constructor.drivers}</p>
-        </div>
-      ))}
+      <UpsertConstructorModalForm
+        action="/admin/constructors"
+        method="post"
+        open={createConstructorModal}
+        onCancel={() => setCreateConstructorModal(false)}
+        onSubmit={onSubmitCreateConstructor}
+      />
+      <Table dataSource={constructors} columns={columns} />;
     </main>
   );
 }

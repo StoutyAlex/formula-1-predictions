@@ -5,15 +5,21 @@ import type { Route } from './+types/root';
 import { ConfigProvider, theme } from 'antd';
 import { useState } from 'react';
 
+import '../public/antd.min.css'; // add this line
+import { StyleProvider } from '@ant-design/cssinjs';
+
 export const links: LinksFunction = () => [
   {
     rel: 'stylesheet',
     href: 'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css',
   },
+  {
+    rel: 'stylesheet',
+    href: '../public/antd.min.css',
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  // TODO: Toggle this
   const [darkMode, setDarkMode] = useState(true);
 
   return (
@@ -25,13 +31,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <ConfigProvider
-          theme={{
-            algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
-          }}
-        >
-          {children}
-        </ConfigProvider>
+        <StyleProvider hashPriority="high">
+          <ConfigProvider
+            theme={{
+              algorithm: darkMode ? theme.darkAlgorithm : theme.defaultAlgorithm,
+            }}
+          >
+            {children}
+          </ConfigProvider>
+        </StyleProvider>
         <ScrollRestoration />
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
         <Scripts />

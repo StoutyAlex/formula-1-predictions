@@ -1,6 +1,5 @@
 import { useLoaderData, useRouteLoaderData, type LoaderFunctionArgs } from 'react-router';
 import { Session } from '~/services/formula-one/models/session.model';
-import { OpenF1Repo } from '~/services/third-party/open-f1/open-f1.repo.server';
 import { jsonResponse } from '~/utils/responses';
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
