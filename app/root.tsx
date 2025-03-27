@@ -1,22 +1,9 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, type LinksFunction } from 'react-router';
-import './app.css';
+import { isRouteErrorResponse, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
 import type { Route } from './+types/root';
 
-import '../public/antd.min.css'; // add this line
-import { StyleProvider } from '@ant-design/cssinjs';
+import { Provider } from '~/components/ui/provider';
 
-import { MantineProvider, Text } from '@mantine/core';
-
-export const links: LinksFunction = () => [
-  {
-    rel: 'stylesheet',
-    href: 'https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css',
-  },
-  {
-    rel: 'stylesheet',
-    href: '../public/antd.min.css',
-  },
-];
+import './app.css';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -25,17 +12,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
-        <Links />
       </head>
       <body>
-        <StyleProvider hashPriority="high">
-          <MantineProvider>
-            <Text>Welcome to Mantine!</Text>
-            {children}
-          </MantineProvider>
-        </StyleProvider>
+        <Provider>{children}</Provider>
         <ScrollRestoration />
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
         <Scripts />
       </body>
     </html>
@@ -60,11 +40,11 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <main>
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre>
           <code>{stack}</code>
         </pre>
       )}
